@@ -14,7 +14,7 @@ module.exports = {
 ```bash
     npm install
 ```
-    3. **Botu Başlatın:**
+3. **Botu Başlatın:**
     - `node .` ve ya `node index.js` ile dosyasını çalıştırın.
 
 ## Kullanım
