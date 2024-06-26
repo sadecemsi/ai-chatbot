@@ -15,7 +15,7 @@ module.exports = {
     npm install
 ```
 3. **Botu Başlatın:**
-    - `node .` ve ya `node index.js` ile dosyasını çalıştırın.
+    - `node .` ve ya `node index.js` ile botunuzu çalıştırın.
 
 ## Kullanım
    Botun `/sor` ve `!sor` olmak üzere iki tane komutu bulunmaktadır.
