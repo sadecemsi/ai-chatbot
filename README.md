@@ -8,10 +8,10 @@
 module.exports = {
     token: 'BURAYA TOKEN GELCEK' 
 };
-     
-  2. **Gerekli Paketleri Yükleyin:**
+     ```
+2. **Gerekli Paketleri Yükleyin:**
     - Proje dizininde terminali açın ve aşağıdaki komutu çalıştırın:
-    ```bash
+    ```json
     npm install
     ```
     3. **Botu Başlatın:**
