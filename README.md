@@ -35,7 +35,7 @@ Herhangi bir sorunuz veya öneriniz varsa, lütfen iletişime geçmekten çekinm
 
 ## Topluluk
 
-Geliştirici topluluğumuza katılın ve diğer geliştiricilerle etkileşimde bulunun!
+Sunucumuza gelmeyi unutmayın!
 
 [![Discord Banner](https://api.weblutions.com/discord/invite/msidev/)](https://discord.gg/msidev)
 
