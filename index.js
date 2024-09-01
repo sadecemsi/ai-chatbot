@@ -18,7 +18,6 @@ for (const file of commandFiles) {
     commands.push(command.data.toJSON());
 }
 
-// Komutları yükle ve kaydet
 const rest = new REST({ version: '9' }).setToken(token);
 
 async function deployCommands() {
@@ -49,10 +48,15 @@ client.on('interactionCreate', async interaction => {
     if (!command) return;
 
     try {
+        await interaction.deferReply();
         await command.execute(interaction);
     } catch (error) {
         console.error(error);
-        await interaction.reply({ content: 'Bu komutu çalıştırırken bir hata oluştu!', ephemeral: true });
+        if (interaction.deferred || interaction.replied) {
+            await interaction.editReply({ content: 'Bu komutu çalıştırırken bir hata oluştu!', ephemeral: true }).catch(console.error);
+        } else {
+            await interaction.reply({ content: 'Bu komutu çalıştırırken bir hata oluştu!', ephemeral: true }).catch(console.error);
+        }
     }
 });
 
@@ -73,7 +77,7 @@ client.on('messageCreate', async message => {
         await command.executeMessage(message, soru);
     } catch (error) {
         console.error(error);
-        await message.reply('Bu komutu çalıştırırken bir hata oluştu!');
+        await message.reply('Bu komutu çalıştırırken bir hata oluştu!').catch(console.error);
     }
 });
 
