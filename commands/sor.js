@@ -4,39 +4,33 @@ const fs = require('fs').promises;
 const path = require('path');
 
 const msiai = new MSIAI();
+const tempDir = path.join(__dirname, '..', 'temp');
 
-function getFileExtension(content) {
-    if (content.includes('```javascript') || content.includes('```js')) {
-        return 'js';
-    } else if (content.includes('```python') || content.includes('```py')) {
-        return 'py';
-    } else {
-        return 'txt';
+async function ensureTempDirExists() {
+    try {
+        await fs.access(tempDir);
+    } catch (error) {
+        await fs.mkdir(tempDir, { recursive: true });
     }
 }
 
-function extractCodeBlock(content) {
-    const codeBlockRegex = /```(?:javascript|js|python|py)?\n([\s\S]*?)```/;
-    const match = content.match(codeBlockRegex);
-    return match ? match[1] : content;
-}
-
 async function handleResponse(response, replyFunc) {
-    if (response.reply.length > 2000) {
-        const fileExtension = getFileExtension(response.reply);
-        const fileName = `cevap_${Date.now()}.${fileExtension}`;
-        const filePath = path.join(__dirname, '..', 'temp', fileName);
-        
-        let fileContent = response.reply;
-        if (fileExtension !== 'txt') {
-            fileContent = extractCodeBlock(response.reply);
-        }
+    await ensureTempDirExists();
 
-        await fs.writeFile(filePath, fileContent);
-        await replyFunc({ content: 'Cevap çok uzun, bir dosya olarak gönderiliyor.', files: [filePath] });
+    const replyContent = response.reply;
+
+    if (replyContent.length > 2000) {
+        const fileName = `cevap_${Date.now()}.txt`;
+        const filePath = path.join(tempDir, fileName);
+
+       
+        await fs.writeFile(filePath, replyContent);
+        console.log(`Dosya oluşturuldu: ${filePath}`);
+        await replyFunc({ content: 'Yanıt çok uzun, bir dosya olarak gönderiliyor.', files: [filePath] });
         await fs.unlink(filePath);
+        console.log(`Dosya silindi: ${filePath}`);
     } else {
-        await replyFunc(response.reply);
+        await replyFunc(replyContent);
     }
 }
 
@@ -60,7 +54,7 @@ module.exports = {
 
             await handleResponse(response, (content) => interaction.editReply(content));
         } catch (error) {
-            console.error(error);
+            console.error('Soru sorma hatası:', error);
             await interaction.editReply('Üzgünüm, bir hata oluştu.');
         }
     },
@@ -76,8 +70,9 @@ module.exports = {
 
             await handleResponse(response, (content) => message.reply(content));
         } catch (error) {
-            console.error(error);
+            console.error('Soru sorma hatası:', error);
             await message.reply('Üzgünüm, bir hata oluştu.');
         }
     },
 };
+
