@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const MSIAI = require('msiai');
 const fs = require('fs').promises;
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');  
 
 const msiai = new MSIAI();
 const tempDir = path.join(__dirname, '..', 'temp');
@@ -20,13 +21,17 @@ async function handleResponse(response, replyFunc) {
     const replyContent = response.reply;
 
     if (replyContent.length > 2000) {
-        const fileName = `cevap_${Date.now()}.txt`;
+        const fileName = `cevap_${uuidv4()}.txt`;  
         const filePath = path.join(tempDir, fileName);
 
        
         await fs.writeFile(filePath, replyContent);
         console.log(`Dosya oluşturuldu: ${filePath}`);
+        
+       
         await replyFunc({ content: 'Yanıt çok uzun, bir dosya olarak gönderiliyor.', files: [filePath] });
+        
+       
         await fs.unlink(filePath);
         console.log(`Dosya silindi: ${filePath}`);
     } else {
@@ -75,4 +80,3 @@ module.exports = {
         }
     },
 };
-
