@@ -1,0 +1,18 @@
+{
+  "name": "ai-chat-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "croxydb": "^0.0.25",
+    "discord.js": "^14.15.3",
+    "fs": "^0.0.1-security",
+    "msiai": "^2.2.1",
+    "path": "^0.12.7"
+  }
+}
