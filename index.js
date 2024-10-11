@@ -15,7 +15,7 @@ const client = new Client({
 });
 
 client.commands = new Collection();
-client.msiai = new MSIAI(apiKey);
+client.msiai = new MSIAI();
 client.db = croxydb;
 
 const commandsPath = path.join(__dirname, 'commands');
